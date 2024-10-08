@@ -24,9 +24,9 @@ namespace ShapeSquare.Figure
             _sideB = sideB;
             _sideC = sideC;
         } 
-        public double sideA {  get { return _sideA; } set { _sideA = value; } }
-        public double sideB { get { return _sideB; } set { _sideB = value; } }
-        public double sideC { get { return _sideC; } set { _sideC = value; } }
+        public double sideA {  get { return _sideA; } }
+        public double sideB { get { return _sideB; } }
+        public double sideC { get { return _sideC; } }
 
 
         public bool IsRightAngled()

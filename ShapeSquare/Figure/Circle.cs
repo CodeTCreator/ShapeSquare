@@ -13,6 +13,6 @@ namespace ShapeSquare.Figure
             _radius = radius;
         }
 
-        public double Radius { get { return _radius; }  set { _radius = value; } }
+        public double Radius { get { return _radius; } }
     }
 }
