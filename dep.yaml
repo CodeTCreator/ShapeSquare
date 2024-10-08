@@ -1,0 +1,53 @@
+# Учесть проверку готовности пода до работы (обработка запросов)
+# Расписать ресурсы минимальные и необходимые при развертывании
+# Разместить поды на разных нодах
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app-deployment
+spec:
+# Количество подов
+  replicas: 3  
+  selector:
+  # метка для подов
+    matchLabels:
+      app: web-app
+  # шаблон подов
+  template:
+    metadata:
+      labels:
+        app: web-app
+    spec:
+    # описание контейнера 
+      containers:
+      - name: web-app-container
+        image: image1  
+        ports:
+        - containerPort: 80
+        # ресурсы контейнера с запасом на инициализацию
+        resources:
+          requests:
+            memory: "128Mi"  
+            cpu: "100m"  
+          limits:
+            memory: "256Mi"  
+            cpu: "500m"  
+        # Описание проверки пода перед тем, как его использовать
+        readinessProbe:
+          httpGet:
+            path: /checkPod  
+            port: 80
+          initialDelaySeconds: 10  
+          periodSeconds: 5  
+      # Размещение под на разных нодах
+      affinity:
+        podAntiAffinity: 
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - web-app
+            topologyKey: "kubernetes.io/hostname"  
+      terminationGracePeriodSeconds: 60  # Дополнительно указываем время ожидания перед прин. завершением
